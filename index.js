@@ -1,22 +1,24 @@
-// Creando store
-import { createStore } from 'redux';
+import { COUNTER_ADD, COUNTER_SUB } from './store/actions.js';
+import store from './store/store.js'
 
-const initialState = 0
+// Suscribirse al store, para estar atento a algún cambio (dispatch) en el store, siempre debe ir antes del dispatch
+store.subscribe(() => {
+    console.log(store.getState());
+})
 
-// Reducer recibe un estado anterior y cambia el store
-// action es un objeto
-const reducer = (prevState = initialState, action) => {
-    switch (action.type) {
-        case 'COUNTER_ADD':
-            return prevState + 1;
-        default:
-            return prevState;
-        }
-    }
+// Acción automática (creador de acción para el add)
+const counterAdd = (payload) => ({
+    type: COUNTER_ADD, payload: payload,
+})
 
-const store = createStore(reducer);
+const counterSub = (payload) => ({
+    type: COUNTER_SUB, payload: payload,
+})
 
 // Despachando action
-store.dispatch({type: "COUNTER_ADD"});
+// store.dispatch({type: "COUNTER_ADD", payload:10});
 
-console.log(store.getState());
+store.dispatch(counterAdd(3));
+store.dispatch(counterSub(2));
+
+
